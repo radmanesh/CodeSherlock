@@ -34,13 +34,13 @@ https://www.ou.edu/oscer/support/python/jupyter-tunneling
 
 ### Micromamba OSCER installation ###
 
-### say you are in /scratch/cs5293XX/micromamba
+### say you are in /scratch/cs529329/micromamba
 
 curl -L https://micro.mamba.pm/api/micromamba/linux-64/latest | tar -xvj bin/micromamba
 
-export MAMBA_ROOT_PREFIX="/scratch/cs5293XX/micromamba"
+export MAMBA_ROOT_PREFIX="/scratch/cs529329/micromamba"
 
-MM="/scratch/cs5293XX/micromamba/bin/micromamba"
+MM="/scratch/cs529329/micromamba/bin/micromamba"
 
 eval "$("$MM" shell hook -s bash)"
 
@@ -64,8 +64,8 @@ pip install --only-binary=:all: -r requirements.txt
 sbatch exp.sbatch
 
 # See if job is running or is executing
-squeue -u cs5293XX
-watch -n 2 squeue -u cs5293XX
+squeue -u cs529329
+watch -n 2 squeue -u cs529329
 
 # To cancel job
 scancel JOBID
