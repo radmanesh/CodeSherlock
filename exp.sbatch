@@ -13,11 +13,11 @@
 #SBATCH --mem=16G
 ##SBATCH --time=12:00:00
 ##SBATCH --time=00:20:00
-#SBATCH --time=00:05:00
+#SBATCH --time=12:00:00
 #SBATCH --job-name=exp1
-##SBATCH --mail-user=ADD YOUR OWN EMAIL
+#SBATCH --mail-user=radmanesh@ou.edu
 #SBATCH --mail-type=ALL
-#SBATCH --chdir=/home/cs5293XX/demo
+#SBATCH --chdir=/home/cs529329/CodeSherlock
 #SBATCH --output=results/exp1_%j_stdout.txt
 #SBATCH --error=results/exp1_%j_stderr.txt
 ##SBATCH --array=0-4    # the double ## means that this line is ignored
@@ -26,4 +26,4 @@
 
 # NOTE, make sure you change your directory!
 
-python run_model.py
+python train-baseline.py
