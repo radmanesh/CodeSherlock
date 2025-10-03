@@ -13,7 +13,7 @@
 #SBATCH --mem=16G
 ##SBATCH --time=12:00:00
 ##SBATCH --time=00:20:00
-#SBATCH --time=12:00:00
+#SBATCH --time=00:12:00
 #SBATCH --job-name=exp1
 #SBATCH --mail-user=radmanesh@ou.edu
 #SBATCH --mail-type=ALL
