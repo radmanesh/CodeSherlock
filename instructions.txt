@@ -1,0 +1,127 @@
+# Log into super computer
+ssh cs5293XX@schooner.oscer.ou.edu
+
+# /home can hold up to 20GB per person
+# /scratch can hold a few TB in total, but automatically deletes after 2 weeks
+
+===================================================================
+
+# Windows/Other download help
+https://www.ou.edu/oscer/support/file_transfer
+
+# Mac & Linux Download small files
+scp -r cs5293XX@schooner.oscer.ou.edu:/home/cs5293XX/fileloc/filename.py .
+
+# Mac & Linux Upload small files
+scp -r . cs5293XX@schooner.oscer.ou.edu:/home/cs5293XX/fileloc/filename.py
+
+------------------------------------------------------------------
+
+# For Files 1GB+, use Globus File Transfer
+https://www.ou.edu/oscer/support/globus
+
+===================================================================
+
+# VSCode Setup
+https://www.ou.edu/oscer/support/VS_Code
+
+# Jupyter Notebook Setup (VSCode Setup preferred)
+https://www.ou.edu/oscer/support/python/jupyter-tunneling
+
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+# ENV SET UP DETAILED
+
+### Micromamba OSCER installation ###
+
+### say you are in /scratch/cs5293XX/micromamba
+
+curl -L https://micro.mamba.pm/api/micromamba/linux-64/latest | tar -xvj bin/micromamba
+
+export MAMBA_ROOT_PREFIX="/scratch/cs5293XX/micromamba"
+
+MM="/scratch/cs5293XX/micromamba/bin/micromamba"
+
+eval "$("$MM" shell hook -s bash)"
+
+micromamba --version
+
+### Env Creation ###
+
+micromamba create -n test -c conda-forge python=3.12
+
+micromamba activate test
+
+pip install -U pip wheel setuptools
+
+pip install --only-binary=:all: -r requirements.txt
+
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+# Common instructions for super computer.
+
+# Job Submission
+sbatch exp.sbatch
+
+# See if job is running or is executing
+squeue -u cs5293XX
+watch -n 2 squeue -u cs5293XX
+
+# To cancel job
+scancel JOBID
+
+# Find available partitions
+sinfo
+
+# Monitor file live
+tail -f file.txt
+
+------------------------------------------------------------------
+
+### TMUX Commands ###
+
+# Make tmux session
+tmux new -s test
+
+# List tmux sessions
+tmux list-sessions
+
+# Go into tmux session
+tmux attach -t test
+
+# Create vertical panel
+Ctrl+b %
+
+# Create horizontal panel
+Ctrl+b "
+
+# Delete panel
+Ctrl+b x
+
+# Go to panel
+Ctrl+b "arrow key"
+
+# Create window
+Ctrl+b c
+
+# Delete window
+Ctrl+b &
+
+# Go to window
+Ctrl+b "number from 0-9"
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+# How to see job progress on schooner
+cd results
+nano exp1_%j_stdout.txt
+
+# This file updates every ~10 seconds, but you have to re check it with nano
+# (exit and re enter).
+nano exp1_%j_stdout.txt
+
+# Another option is to use wandb, this takes initial set up, but helps
+# into seeing how your model is learning in greater detail.
+https://wandb.ai/site/
+
+

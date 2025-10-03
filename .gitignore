@@ -1,0 +1,4 @@
+parquet_data/
+tokenized_data/
+__pycache__/
+
