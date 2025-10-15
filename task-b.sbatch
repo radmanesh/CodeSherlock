@@ -3,8 +3,8 @@
 ##SBATCH --partition=gpu_a100
 ##SBATCH --partition=sooner_gpu_test_ada
 ##SBATCH --partition=sooner_gpu_test
-##SBATCH --partition=gpu
-#SBATCH --partition=debug_gpu # This partition is currently selected.
+#SBATCH --partition=gpu
+##SBATCH --partition=debug_gpu # This partition is currently selected.
 #
 #SBATCH --gres=gpu:1
 ##SBATCH --cpus-per-task=64
@@ -13,7 +13,7 @@
 #SBATCH --mem=16G
 ##SBATCH --time=12:00:00
 ##SBATCH --time=00:20:00
-#SBATCH --time=00:12:00
+#SBATCH --time=12:00:00
 #SBATCH --job-name=exp1
 #SBATCH --mail-user=radmanesh@ou.edu
 #SBATCH --mail-type=ALL
@@ -26,4 +26,10 @@
 
 # NOTE, make sure you change your directory!
 
-python train-baseline.py
+MM="/scratch/cs529329/micromamba/bin/micromamba"
+
+eval "$("$MM" shell hook -s bash)"
+
+micromamba activate nlpproject
+
+python train-baseline.py --task B
