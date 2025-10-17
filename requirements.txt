@@ -12,3 +12,6 @@ transformers
 pandas
 seaborn
 matplotlib
+evaluate
+tensorboardX
+wandb

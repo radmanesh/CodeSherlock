@@ -11,11 +11,14 @@ from transformers import (
     EarlyStoppingCallback,
     DataCollatorWithPadding
 )
-from sklearn.metrics import accuracy_score, precision_recall_fscore_support, classification_report
+from sklearn.metrics import accuracy_score, precision_recall_fscore_support, classification_report, confusion_matrix
+import matplotlib.pyplot as plt
+import seaborn as sns
 import argparse
 import logging
 import warnings
 warnings.filterwarnings("ignore")
+from datetime import datetime
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -259,13 +262,14 @@ class CodeBERTTrainer:
 
         return trainer
 
-    def evaluate_model(self, trainer, val_dataset):
+    def evaluate_model(self, trainer, val_dataset, output_dir="./results"):
         """
-        Evaluate the trained model on validation dataset.
+        Evaluate the trained model on validation dataset and generate confusion matrix.
 
         Args:
             trainer: Trained Trainer object
             val_dataset: Validation dataset for evaluation
+            output_dir: Directory to save confusion matrix plot
 
         Returns:
             PredictionOutput: Predictions and metrics from evaluation
@@ -282,6 +286,35 @@ class CodeBERTTrainer:
         # Print detailed classification report
         logger.info("Classification Report:")
         print(classification_report(y_true, y_pred))
+
+        # Generate confusion matrix
+        logger.info("Generating confusion matrix...")
+        cm = confusion_matrix(y_true, y_pred)
+
+        # Create confusion matrix plot
+        plt.figure(figsize=(10, 8))
+        sns.heatmap(cm, annot=True, fmt='d', cmap='Blues',
+                    xticklabels=range(self.num_labels),
+                    yticklabels=range(self.num_labels))
+        plt.title('Confusion Matrix')
+        plt.ylabel('True Label')
+        plt.xlabel('Predicted Label')
+
+        # Save confusion matrix plot
+        current_time = datetime.now().strftime("%Y%m%d_%H%M%S")
+        cm_path = os.path.join(output_dir, f'{current_time}_confusion_matrix.png')
+        plt.savefig(cm_path, dpi=300, bbox_inches='tight')
+        logger.info(f"Confusion matrix saved to {cm_path}")
+        plt.close()
+
+        # Print confusion matrix statistics
+        logger.info(f"Confusion Matrix:\n{cm}")
+
+        # Calculate per-class accuracy from confusion matrix
+        per_class_accuracy = cm.diagonal() / cm.sum(axis=1)
+        logger.info("Per-class accuracy:")
+        for i, acc in enumerate(per_class_accuracy):
+            logger.info(f"  Class {i}: {acc:.4f}")
 
         return predictions
 
@@ -319,7 +352,7 @@ class CodeBERTTrainer:
             )
 
             # Evaluate the model
-            self.evaluate_model(trainer, val_dataset)
+            self.evaluate_model(trainer, val_dataset, output_dir)
 
             logger.info("Pipeline completed successfully!")
             return trainer
