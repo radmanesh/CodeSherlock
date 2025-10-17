@@ -10,4 +10,5 @@ datasets
 accelerate
 transformers
 pandas
-
+seaborn
+matplotlib
